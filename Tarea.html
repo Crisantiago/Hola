@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"> <!--<meta charset="iso-8859-1"> -->
+<head><title>Ejemplo</title>
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<link rel="stylesheet" href="bootstrap-4.1.0-dist/css/bootstrap.min.css" >
+<script src="bootstrap-4.1.0-dist/js/bootstrap.min.js"></script>
+<style>
+p{
+font-family:"Gill Sans MT";
+font-size:20px;
+background-color:#999999;
+color:#FFFFFF;
+}
+.boton {
+font-family:"Gill Sans MT";
+font-size:15px;
+background-color:#FF0000;
+color:#FFFFFF;
+}
+
+.bot1{
+font-family:Arial, Helvetica, sans-serif;
+font-size:14px;
+background-color:#CCCCCC;
+color:#000000;
+}
+
+.boton:hover {
+	opacity: 1;
+}
+
+
+body{
+	background-image:url(fondo38.GIF);
+	color:#000000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	/*text-align:center;*/   	
+	}
+</style>
+
+</head>
+
+<body>
+<script>
+document.write("<p>Matrices</p>")
+
+var a= new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array()); 
+var n;
+var b=new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array());
+/*do{
+	n=parseInt(prompt("Dimension de la matriz: "));
+}while(n>7 || n<3);*/
+
+for (i=0;i<3;i++){ 
+	for (j=0;j<3;j++){ 
+		a[i][j]=prompt("Matriz A ["+i+"]["+j+"]");
+	}
+} 
+
+for(i=0;i<3;i++){
+	b[i]=prompt("Matriz B ["+i+"]");
+}
+
+document.write("Ax=b");
+document.write("<br>");
+for (i=0;i<3;i++){ 
+	for (j=0;j<3;j++){ 
+   		document.write("<button type='button' class='btn btn-primary borde'>"+a[i][j]+"</button>");   
+	}
+	document.write("<button type='button' class='boton'>"+b[i]+"</button>");
+	document.write("<br>");
+}
+
+/*document.write("Matriz b");
+document.write("<br>");
+for(i=0;i<3;i++){
+	 document.write("<button type='button' class='boton'>"+b[i]+"</button>");
+	 	document.write("<br>");
+}*/
+
+document.write("<p>Metodo de Seidel</p>")
+document.write("Matriz de Seidel");
+document.write("<br>");
+
+var c= new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array());
+var d= new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array());
+for(i=0;i<3;i++){
+	for(j=0;j<3;j++){
+		if(i==j){c[i][j]=0}
+		else{c[i][j]=-(a[i][j]/a[i][i])}
+	}
+}
+for(i=0;i<3;i++){
+	d[i]=b[i]/a[i][i];
+}
+
+for (i=0;i<3;i++){ 
+	for (j=0;j<3;j++){ 
+   		document.write("<button type='button' class='btn btn-primary borde'>"+c[i][j]+"</button>");   
+	}
+	document.write("<button type='button' class='boton'>"+d[i]+"</button>");
+	document.write("<br>");
+}
+
+document.write("<br>");
+var x1=0;
+var x2=0;
+var x3=0;
+
+for(i=0;i<50;i++){
+	document.write("<button type='button' class='boton'>"+i+"</button>");
+	document.write("<button type='button' class='bot1'>x1="+x1+"</button>");
+	document.write("<button type='button' class='bot1'>x2="+x2+"</button>");
+	document.write("<button type='button' class='bot1'>x3="+x3+"</button>");
+	document.write("<br>");
+	var aux1=x1;
+	var aux2=x2;
+	var aux3=x3;
+	x1=c[0][1]*aux2+c[0][2]*aux3+d[0];
+	x2=c[1][0]*aux1+c[1][2]*aux3+d[1];
+	x3=c[2][0]*aux1+c[2][1]*aux2+d[2];
+	x1=x1.toFixed(6);
+	x2=x2.toFixed(6);
+	x3=x3.toFixed(6);
+}
+
+document.write("<p>Metodo LU</p>")
+var l= new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array());
+var u= new Array(new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array());
+u[0][0]=a[0][0];
+u[0][1]=a[0][1];
+u[0][2]=a[0][2];
+var aux10=a[1][0]/a[0][0];
+var aux20=a[2][0]/a[0][0];
+
+for(i=0;i<3;i++){
+	u[1][i]=a[1][i]-aux10*a[0][i];
+	u[2][i]=a[2][i]-aux20*a[0][i];
+}
+var aux21=u[2][1]/u[1][1];
+for(i=0;i<3;i++){
+	u[2][i]=u[2][i]-aux21*u[1][i];
+}
+
+l[0][0]=1;
+l[0][1]=0;
+l[0][2]=0;
+l[1][0]=aux10;
+l[1][1]=1;
+l[1][2]=0;
+l[2][0]=aux20;
+l[2][1]=aux21;
+l[2][2]=1;
+
+document.write("Matriz L");
+document.write("<br>");
+for (i=0;i<3;i++){ 
+	for (j=0;j<3;j++){ 
+   		document.write("<button type='button' class='btn btn-primary borde'>"+l[i][j]+"</button>");   
+	}
+	document.write("<br>");
+}
+
+document.write("Matriz U");
+document.write("<br>");
+for (i=0;i<3;i++){ 
+	for (j=0;j<3;j++){ 
+   		document.write("<button type='button' class='btn btn-primary borde'>"+u[i][j]+"</button>");   
+	}
+	document.write("<br>");
+}
+
+var ar=b[0];
+var br=b[1]-l[1][0]*ar;
+var cr=b[2]-l[2][0]*ar-l[2][1]*br;
+document.write("<br>");
+document.write("Igualamos L con b");document.write("<br>");
+document.write("a= "+ar);document.write("<br>");
+document.write("b= "+br);document.write("<br>");
+document.write("c= "+cr);document.write("<br>");
+document.write("<br>");
+document.write("Igualamos U con a, b y c");document.write("<br>");
+var z=cr/u[2][2];
+var y=(br-u[1][2]*z)/u[1][1];
+var x=(ar-u[0][2]*z-u[0][1]*y)/u[0][0];
+document.write("x ="+x);
+document.write("<br>");
+document.write("y ="+y);
+document.write("<br>");
+document.write("z ="+z);
+document.write("<br>");
+document.write("<P>FIN DEL PROGRAMA!!!</P>");
+</script>
+
+</body>
+</html>
